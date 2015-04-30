@@ -1,0 +1,4 @@
+index.html;Home
+generator.html;Menügenerator
+dummy1.html;Dummy 1
+dummy2.html;Dummy 2
