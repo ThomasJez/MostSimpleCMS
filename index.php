@@ -11,34 +11,43 @@ class MostSimpleCMS
         $htmlFiles = array();
         foreach ($currentDir as $fileEntry) {
             if ((preg_match('/.+\.html$/', $fileEntry)) === 1) {
-                $this->extractTemplates($fileEntry);
+                $htmlFiles[] = $fileEntry;
             }
         }
-        foreach ($currentDir as $fileEntry) {
-            if ((preg_match('/.+\.html$/', $fileEntry)) === 1) {
-                $this->processFile('navi.txt', $fileEntry);
-            }
+        foreach ($htmlFiles as $fileEntry) {
+            $this->extractTemplates($fileEntry);
+        }
+        foreach ($htmlFiles as $fileEntry) {
+            $this->processFile($fileEntry);
         }
     }
 
     public function extractTemplates($fileName)
     {
         $html = file($fileName, FILE_IGNORE_NEW_LINES);
-        $begin = array_search('<!-- Template Begin Menu -->', $html);
-        if ($begin === false) {
-            return;
+        $allTemplates = preg_grep('/<!-- Template Begin [A-Za-z0-9]+ -->/', $html);
+        $templateNames = array();
+        foreach ($allTemplates as $template) {
+            $templateName = explode(' ', $template);
+            $templateNames[] = $templateName[3];
         }
-        $templateName = explode(' ', $html[$begin]);
-        $begin++;
-        $end = array_search('<!-- Template End Menu -->', $html);
-        $length = $end - $begin - 1;
-        $templateArray = array_slice($html, $begin, $length);
-        $this->templates[$templateName[3]] = $templateArray;
+        var_dump($templateNames);
+        foreach ($templateNames as $templateName) {
+            $begin = array_search('<!-- Template Begin ' . $templateName . ' -->', $html);
+            if ($begin === false) {
+                return;
+            }
+//            $templateName = explode(' ', $html[$begin]);
+            $begin++;
+            $end = array_search('<!-- Template End ' . $templateName . ' -->', $html);
+            $length = $end - $begin - 1;
+            $templateArray = array_slice($html, $begin, $length);
+            $this->templates[$templateName] = $templateArray;
+        }
     }
 
-    public function processFile($naviName, $fileName)
+    public function processFile($fileName)
     {
-        echo $fileName . PHP_EOL;
         copy($fileName, $fileName . '.bak');
         $html = file($fileName, FILE_IGNORE_NEW_LINES);
         $begin = array_search('<!-- Placeholder Begin Menu -->', $html);
