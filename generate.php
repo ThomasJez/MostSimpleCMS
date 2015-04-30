@@ -31,13 +31,11 @@ class MostSimpleCMS
             $templateName = explode(' ', $template);
             $templateNames[] = $templateName[3];
         }
-        var_dump($templateNames);
         foreach ($templateNames as $templateName) {
             $begin = array_search('<!-- Template Begin ' . $templateName . ' -->', $html);
             if ($begin === false) {
                 return;
             }
-//            $templateName = explode(' ', $html[$begin]);
             $begin++;
             $end = array_search('<!-- Template End ' . $templateName . ' -->', $html);
             $length = $end - $begin - 1;
