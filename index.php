@@ -49,17 +49,19 @@ class MostSimpleCMS
     public function processFile($fileName)
     {
         copy($fileName, $fileName . '.bak');
-        $html = file($fileName, FILE_IGNORE_NEW_LINES);
-        $begin = array_search('<!-- Placeholder Begin Menu -->', $html);
-        if ($begin === false) {
-            return;
+        foreach ($this->templates as $templateName => $template) {
+            $html = file($fileName, FILE_IGNORE_NEW_LINES);
+            $begin = array_search('<!-- Placeholder Begin ' . $templateName . ' -->', $html);
+            if ($begin === false) {
+                continue;
+            }
+            $begin++;
+            $end = array_search('<!-- Placeholder End ' . $templateName . ' -->', $html);
+            $length = $end - $begin - 1;
+            array_splice($html, $begin, $length, $this->templates[$templateName]);
+            $htmlString = implode(PHP_EOL, $html);
+            file_put_contents($fileName, $htmlString);
         }
-        $begin++;
-        $end = array_search('<!-- Placeholder End Menu -->', $html);
-        $length = $end - $begin - 1;
-        array_splice($html, $begin, $length, $this->templates['Menu']);
-        $htmlString = implode(PHP_EOL, $html);
-        file_put_contents($fileName, $htmlString);
         return;
     }
 }
