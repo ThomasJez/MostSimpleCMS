@@ -1,4 +1,7 @@
 .idea
+.buildpath
+.settings
+.project
 /*.html
 /*.css
 /pics
