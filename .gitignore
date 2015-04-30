@@ -1,0 +1,9 @@
+.idea
+.buildpath
+.settings
+.project
+/*.html
+/*.css
+/pics
+*.html.bak
+
