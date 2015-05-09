@@ -25,19 +25,20 @@ class MostSimpleCMS
     public function extractTemplates($fileName)
     {
         $html = file($fileName, FILE_IGNORE_NEW_LINES);
-        $allTemplates = preg_grep('/<!-- Template Begin [A-Za-z0-9]+ -->/', $html);
+
+        $allTemplates = preg_grep('/ *<!-- Template Begin [A-Za-z0-9]+ --> */', $html);
         $templateNames = array();
         foreach ($allTemplates as $template) {
-            $templateName = explode(' ', $template);
+            $templateName = explode(' ', trim($template));
             $templateNames[] = $templateName[3];
         }
         foreach ($templateNames as $templateName) {
-            $begin = array_search('<!-- Template Begin ' . $templateName . ' -->', $html);
+            $begin = $this->array_search_regex('/ *<!-- Template Begin ' . $templateName . ' --> */', $html);
             if ($begin === false) {
                 return;
             }
             $begin++;
-            $end = array_search('<!-- Template End ' . $templateName . ' -->', $html);
+            $end = $this->array_search_regex('/ *<!-- Template End ' . $templateName . ' --> */', $html);
             $length = $end - $begin - 1;
             $templateArray = array_slice($html, $begin, $length);
             $this->templates[$templateName] = $templateArray;
@@ -49,17 +50,22 @@ class MostSimpleCMS
         copy($fileName, $fileName . '.bak');
         foreach ($this->templates as $templateName => $template) {
             $html = file($fileName, FILE_IGNORE_NEW_LINES);
-            $begin = array_search('<!-- Placeholder Begin ' . $templateName . ' -->', $html);
+            $begin = $this->array_search_regex('/ *<!-- Placeholder Begin ' . $templateName . ' --> */', $html);
             if ($begin === false) {
                 continue;
             }
             $begin++;
-            $end = array_search('<!-- Placeholder End ' . $templateName . ' -->', $html);
+            $end = $this->array_search_regex('/ *<!-- Placeholder End ' . $templateName . ' --> */', $html);
             $length = $end - $begin - 1;
             array_splice($html, $begin, $length, $this->templates[$templateName]);
             $htmlString = implode(PHP_EOL, $html);
             file_put_contents($fileName, $htmlString);
         }
         return;
+    }
+
+    public function array_search_regex($needle, $haystack) {
+        $beginArray = preg_grep($needle, $haystack);
+        return(empty($beginArray) ? false : array_keys($beginArray)[0]);
     }
 }
