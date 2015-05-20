@@ -1,0 +1,13 @@
+{
+  "name": "MostSimpleCMS",
+  "autoload": {
+    "psr-4": {
+      "MostSimpleCMS\\": "src"
+    }
+  },
+  "authors": [
+    {
+      "name": "Thomas Jez"
+    }
+  ]
+}
