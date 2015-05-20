@@ -6,4 +6,5 @@
 /*.css
 /pics
 *.html.bak
-
+composer.phar
+vendor
