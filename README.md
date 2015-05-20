@@ -42,12 +42,16 @@ Most Simple CMS knows *Templates* and *Placeholders*.
 
 
 
-3. Copy `generate.php` into the directory of your page and let it run with:
+3. Copy `mostsimplecms.phar` into the directory of your page and let it run with:
 
-   `php generate.php`
+   `php mostsimplecms.phar`
 
    The PHP Command Line Interface (php cli) has to be installed and accessible for this. If this isn't the case on your
    Webhost, you have to install php cli on your local machine, edit the page there and upload it when ready.
+
+   In case you want intelligent copying (this is explained below) call:
+
+   `php mostsimplecms.phar -m`
 
 
 4. It's done. The changes which you have done in your templates are spread into all placeholders.
@@ -55,3 +59,15 @@ Most Simple CMS knows *Templates* and *Placeholders*.
 ## Example Page
 The Subdirectory `ExamplePage` of this repo contains a simple webpage with some templates and placeholders to play
 around with.
+
+## Intelligent Copying
+Let's assume your menu looks like this on the first page:
+![alt tag](docs/ExamplePage1.png)
+
+and like this on the second page:
+![alt tag](docs/ExamplePage2.png)
+
+Then simply copying the menu from one page to the other pages isn't enough and you have to invoke inelligent copying by
+using the command line parameter -m
+
+   `php mostsimplecms.phar -m`
