@@ -2,13 +2,42 @@
 namespace MostSimpleCMS;
 use DOMDocument;
 use DOMXPath;
+
+/**
+ * Class MostSimpleCMS
+ * @package MostSimpleCMS
+ * @author Thomas Jez
+ */
 class MostSimpleCMS
 {
+    /**
+     * array of all templates
+     * @var array
+     */
     public $templates = array();
+
+    /**
+     * array of all placeholders
+     * @var array
+     */
     public $placeHolders = array();
+
+    /**
+     * array of the files containing the templates
+     * @var array
+     */
     public $templatePlaces = array();
+
+    /**
+     * array of all html files of the webpage
+     * @var array
+     */
     public $htmlFiles = array();
 
+    /**
+     * wrapper method for the part of the "dumb copying"
+     * @return $this
+     */
     public function processWholePage() {
         $currentDir = scandir(getcwd());
         $this->htmlFiles = array();
@@ -27,6 +56,11 @@ class MostSimpleCMS
         return $this;
     }
 
+    /**
+     * collects the templates from one file and put them into an array
+     * @param string $fileName
+     * @return $this
+     */
     public function extractTemplates($fileName)
     {
         $html = file($fileName, FILE_IGNORE_NEW_LINES);
@@ -52,6 +86,11 @@ class MostSimpleCMS
         return $this;
     }
 
+    /**
+     * applies all templates to all corresponding templates of one file
+     * @param string $fileName
+     * @return $this
+     */
     public function processFile($fileName)
     {
         $placeHolders = array();
@@ -73,11 +112,20 @@ class MostSimpleCMS
         return $this;
     }
 
+    /**
+     * @param string $needle
+     * @param $string haystack
+     * @return bool
+     */
     public function array_search_regex($needle, $haystack) {
         $beginArray = preg_grep($needle, $haystack);
         return(empty($beginArray) ? false : array_keys($beginArray)[0]);
     }
 
+    /**
+     * handles menus which depend on the active url
+     * @return $this
+     */
     public function processMenuSpecials()
     {
         foreach ($this->htmlFiles as $fileEntry) {
@@ -124,7 +172,6 @@ class MostSimpleCMS
                 $this->templates[$templateName] = $modifiedTemplate;
                 $this->processFile($fileEntry);
                 $this->templates[$templateName] = $template;
-
             }
         }
         return $this;
