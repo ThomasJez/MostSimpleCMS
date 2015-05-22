@@ -24,6 +24,7 @@ class MostSimpleCMS
             copy($fileEntry, $fileEntry . '.bak');
             $this->processFile($fileEntry);
         }
+        return $this;
     }
 
     public function extractTemplates($fileName)
@@ -39,7 +40,7 @@ class MostSimpleCMS
         foreach ($templateNames as $templateName) {
             $begin = $this->array_search_regex('/ *<!-- Template Begin ' . $templateName . ' --> */', $html);
             if ($begin === false) {
-                return;
+                return $this;
             }
             $begin++;
             $end = $this->array_search_regex('/ *<!-- Template End ' . $templateName . ' --> */', $html);
@@ -48,6 +49,7 @@ class MostSimpleCMS
             $this->templates[$templateName] = $templateArray;
             $this->templatePlaces[$templateName] = $fileName;
         }
+        return $this;
     }
 
     public function processFile($fileName)
@@ -68,7 +70,7 @@ class MostSimpleCMS
             file_put_contents($fileName, $htmlString);
         }
         $this->placeHolders[$fileName] = $placeHolders;
-        return;
+        return $this;
     }
 
     public function array_search_regex($needle, $haystack) {
@@ -125,5 +127,6 @@ class MostSimpleCMS
 
             }
         }
+        return $this;
     }
 }
