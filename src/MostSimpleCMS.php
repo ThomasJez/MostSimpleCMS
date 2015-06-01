@@ -53,6 +53,8 @@ class MostSimpleCMS
             copy($fileEntry, $fileEntry . '.bak');
             $this->processFile($fileEntry);
         }
+        echo 'Finished.' . PHP_EOL;
+        echo 'Thank you for using Most Simple CMS.' . PHP_EOL;
         return $this;
     }
 
