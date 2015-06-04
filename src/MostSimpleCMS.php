@@ -67,19 +67,19 @@ class MostSimpleCMS
     {
         $html = file($fileName, FILE_IGNORE_NEW_LINES);
 
-        $allTemplates = preg_grep('/ *<!-- Template Begin [A-Za-z0-9]+ --> */', $html);
+        $allTemplates = preg_grep('/[ \t]*<!-- Template Begin [A-Za-z0-9]+ -->[ \t]*/', $html);
         $templateNames = array();
         foreach ($allTemplates as $template) {
             $templateName = explode(' ', trim($template));
             $templateNames[] = $templateName[3];
         }
         foreach ($templateNames as $templateName) {
-            $begin = $this->array_search_regex('/ *<!-- Template Begin ' . $templateName . ' --> */', $html);
+            $begin = $this->array_search_regex('/^[ \t]*<!-- Template Begin ' . $templateName . ' -->[ \t]*$/', $html);
             if ($begin === false) {
                 return $this;
             }
             $begin++;
-            $end = $this->array_search_regex('/ *<!-- Template End ' . $templateName . ' --> */', $html);
+            $end = $this->array_search_regex('/^[ \t]*<!-- Template End ' . $templateName . ' -->[ \t]*$/', $html);
             $length = $end - $begin;
             $templateArray = array_slice($html, $begin, $length);
             $this->templates[$templateName] = $templateArray;
@@ -98,12 +98,12 @@ class MostSimpleCMS
         $placeHolders = array();
         foreach ($this->templates as $templateName => $template) {
             $html = file($fileName, FILE_IGNORE_NEW_LINES);
-            $begin = $this->array_search_regex('/ *<!-- Placeholder Begin ' . $templateName . ' --> */', $html);
+            $begin = $this->array_search_regex('/^[ \t]*<!-- Placeholder Begin ' . $templateName . ' -->[ \t]*$/', $html);
             if ($begin === false) {
                 continue;
             }
             $begin++;
-            $end = $this->array_search_regex('/ *<!-- Placeholder End ' . $templateName . ' --> */', $html);
+            $end = $this->array_search_regex('/^[ \t]*<!-- Placeholder End ' . $templateName . ' -->[ \t]*$/', $html);
             $length = $end - $begin;
             array_splice($html, $begin, $length, $this->templates[$templateName]);
             $placeHolders[$templateName] = &$this->templates[$templateName];
