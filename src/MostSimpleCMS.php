@@ -50,7 +50,7 @@ class MostSimpleCMS
             $this->extractTemplates($fileEntry);
         }
         foreach ($this->htmlFiles as $fileEntry) {
-            copy($fileEntry, $fileEntry . '.bak');
+//            copy($fileEntry, $fileEntry . '.bak');
             $this->processFile($fileEntry);
         }
         echo 'Finished.' . PHP_EOL;
