@@ -9,6 +9,11 @@ all the others. And if you have to change something you have to do it again and 
 This problem is solved by the MostSimpleCMS. (Formerly frames where a popular solution. But frames have many drawbacks,
 so almost nobody uses them anymore.)
 
+## What does one need for it?
+One needs PHP CLI (PHP Command Line Interpreter), at least PHP version 5.4.
+In every Linux distribution you can simply install PHP CLI with the package manager.
+It's also part of XAMPP (Windows) and MAMP (Mac).
+
 ## How does it work?
 Most Simple CMS knows *Templates* and *Placeholders*.
 
@@ -39,6 +44,13 @@ Most Simple CMS knows *Templates* and *Placeholders*.
    whether the place between the placeholder markers is empty or not. The script places the template between these
    two markers
    replacing all code which was there before.
+
+   BUT:
+
+   * Every template/placeholder delimiter must have a line for itself.
+   * Every Begin delimiter must have a corresponding End delimiter and vice versa.
+
+   Templates/placeholders which don't fulfill this conditions are ignored.
 
 
 
