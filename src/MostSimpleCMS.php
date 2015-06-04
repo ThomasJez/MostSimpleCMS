@@ -104,6 +104,9 @@ class MostSimpleCMS
             }
             $begin++;
             $end = $this->array_search_regex('/^[ \t]*<!-- Placeholder End ' . $templateName . ' -->[ \t]*$/', $html);
+            if ($end === false) {
+                continue;
+            }
             $length = $end - $begin;
             array_splice($html, $begin, $length, $this->templates[$templateName]);
             $placeHolders[$templateName] = &$this->templates[$templateName];
