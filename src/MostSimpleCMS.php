@@ -67,7 +67,7 @@ class MostSimpleCMS
     {
         $html = file($fileName, FILE_IGNORE_NEW_LINES);
 
-        $allTemplates = preg_grep('/[ \t]*<!-- Template Begin [A-Za-z0-9]+ -->[ \t]*/', $html);
+        $allTemplates = preg_grep('/[ \t]*<!-- Template Begin [A-Za-z0-9_\-]+ -->[ \t]*/', $html);
         $templateNames = array();
         foreach ($allTemplates as $template) {
             $templateName = explode(' ', trim($template));
